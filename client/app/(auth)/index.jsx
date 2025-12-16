@@ -12,14 +12,13 @@ import { useState } from "react";
 export default function Login() {
   const HandleSubmit = async () => {
     console.log(email,Password)
-    const response = await fetch(`http://192.168.10.20:8000/api/login`, {
+    const response = await fetch(`http://10.184.96.244:8000/api/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ "email":email, "password":Password }),
     });
 
     const data = await response.json();
-    console.log(data);
     if (data.status == "ok") {
       Alert.alert('User Exists', 'My Alert Msg', [
         {
