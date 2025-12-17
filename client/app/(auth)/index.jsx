@@ -7,8 +7,8 @@ export default function StartPage(){
   return(
     <SafeAreaView>
       <View>
-        <Text onPress={()=>navigation.navigate("/login")}>Redirect To SignIn</Text>
-        <Text onPress={()=>navigation.navigate("/register")}>Redirect To SignUp</Text>
+        <Text onPress={()=>navigation.navigate("login")}>Redirect To SignIn</Text>
+        <Text onPress={()=>navigation.navigate("register")}>Redirect To SignUp</Text>
 
       </View>
     </SafeAreaView>

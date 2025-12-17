@@ -1,81 +1,44 @@
-import {
-    Alert,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View
-  } from "react-native";
-  
-  import { useNavigation, useRouter } from "expo-router";
-  import { useState } from "react";
-  
-  export default function Login() {
-    const HandleSubmit = async () => {
-      console.log(email,Password)
-      const response = await fetch(`http://10.184.96.244:8000/api/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ "email":email, "password":Password }),
-      });
-  
-      const data = await response.json();
-      if (data.status == "ok") {
-        Alert.alert('User Exists', 'My Alert Msg', [
-          {
-            text: 'Cancel',
-            onPress: () => console.log('Cancel Pressed'),
-            style: 'cancel',
-          },
-          { text: 'OK', onPress: () => console.log('OK Pressed') },
-        ]);
-        router.replace("/(home)")
-      } else {
-        Alert.alert('User Doesnt Exist', 'Please Register', [
-          {
-            text: 'Cancel',
-            onPress: () => console.log('Cancel Pressed'),
-            style: 'cancel',
-          },
-          { text: 'OK', onPress: () => console.log('OK Pressed') },
-        ]);
-        navigate.navigate("register");
-      }
-    }
-    const router = useRouter();
-    const navigate = useNavigation();
-    const [email, setemail] = useState("");
-    const [Password, setPassword] = useState("");
-    return (
-      <View className="flex-1 justify-center items-center p-6">
-        <Text className="text-3xl font-semibold mb-8">Login</Text>
-  
-        <TextInput
-          className="w-full h-12 border border-gray-300 p-3 mb-4 rounded"
-          placeholder="Username or Email"
-          value={email}
-          onChangeText={(text)=>setemail(text)}
-        />
-        <TextInput
-          secureTextEntry={true}
-          className="w-full h-12 border border-gray-300 p-3 mb-4 rounded"
-          placeholder="Password"
-          value={Password}
-          onChangeText={(text)=>setPassword(text)}
-  
-        />
-  
-  
-        <TouchableOpacity
-          className="w-full h-12 bg-blue-500 justify-center items-center rounded"
-          onPress={() => {
-            HandleSubmit()
-          }}
-        >
-          <Text className="text-white font-bold text-lg">Login</Text>
-        </TouchableOpacity>
-        <TouchableOpacity className="mt-10 p-4 bg-blue-400" onPress={() => router.replace("/(home)/explore")}>
-          <Text className="text-white font-extrabold">Move To Home Page ... </Text>
+import { useState } from "react"
+import { View, Text, TextInput, TouchableOpacity } from "react-native"
+import { SafeAreaView } from "react-native-safe-area-context"
+import { Eye, EyeOff, Square, SquareCheck } from "lucide-react-native";
+import { useNavigation } from "expo-router";
+
+export default function Login() {
+  const [showpwd, setshowpwd] = useState(false);
+  const [remember, setremember] = useState(false);
+  const navigation=useNavigation();
+
+  return (
+    <SafeAreaView className="flex-1 justify-center items-center space-y-10 bg-gray-200">
+      <View className="text-center">
+        <Text className="text-6xl font-semibold text-left">Hi!</Text>
+        <Text className="text-6xl font-semibold text-left">Welcome</Text>
+        <Text className="text-lg font-extralight text-left ml-3 mt-3">I've Been Waiting For You</Text>
+      </View>
+      <View className="w-[80%]">
+        <TextInput className={`border-b-2 border-black py-3 text-lg text-gray-950 mb-3 focus:outline-none`} placeholder="Enter Your Email" />
+        <View className="flex-row border-b-2 border-black py-3 items-center mb-3 justify-between">
+          <TextInput className={`w-[90%] text-lg focus:outline-none`} secureTextEntry={showpwd} autoCapitalize="none" autoCorrect={false} textContentType="password" placeholder="Enter Your Password" />
+          <TouchableOpacity onPress={() => setshowpwd(!showpwd)}>
+            {showpwd ? <Eye color="black" /> : <EyeOff color="black" />}
+          </TouchableOpacity>
+        </View>
+        <View className="flex-row items-center gap-2 mt-5">
+          <TouchableOpacity onPress={() => setremember(!remember)}>
+            {remember ? <SquareCheck /> : <Square />}
+
+          </TouchableOpacity>
+          <Text>Remember Me</Text>
+        </View>
+        <TouchableOpacity className="mt-7 text-center border-2 border-black bg-black text-white p-3 text-xl font-semibold">
+        <Text className="text-white text-center text-xl font-semibold">Login</Text>
         </TouchableOpacity>
       </View>
-    );
-  }
+      <View className="flex-row items-center justify-center">
+      <Text className="text-base text-gray-700 font-extralight">Don't Have An Account ? </Text>
+      <Text className="text-lg font-bold cursor-pointer" onPress={()=>navigation.navigate("register")}> Register</Text>  
+      </View>   
+    </SafeAreaView>
+  )
+}
